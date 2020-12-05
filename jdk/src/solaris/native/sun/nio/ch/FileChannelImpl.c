@@ -51,6 +51,14 @@
 
 static jfieldID chan_fd;        /* jobject 'fd' in sun.io.FileChannelImpl */
 
+#ifdef STATIC_BUILD
+JNIEXPORT jint JNICALL
+JNI_OnLoad_nio(JavaVM *vm, void *reserved)
+{
+    return JNI_VERSION_1_8;
+}
+#endif
+
 JNIEXPORT jlong JNICALL
 Java_sun_nio_ch_FileChannelImpl_initIDs(JNIEnv *env, jclass clazz)
 {

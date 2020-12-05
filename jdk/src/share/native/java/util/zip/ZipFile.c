@@ -55,6 +55,14 @@ static jfieldID jzfileID;
 static int OPEN_READ = java_util_zip_ZipFile_OPEN_READ;
 static int OPEN_DELETE = java_util_zip_ZipFile_OPEN_DELETE;
 
+#ifdef STATIC_BUILD
+JNIEXPORT jint JNICALL
+JNI_OnLoad_zip(JavaVM *vm, void *reserved)
+{
+    return JNI_VERSION_1_8;
+}
+#endif
+
 JNIEXPORT void JNICALL
 Java_java_util_zip_ZipFile_initIDs(JNIEnv *env, jclass cls)
 {

@@ -348,6 +348,8 @@ static jboolean flowSupported0() {
 #define SOCK_OPT_LEVEL IPPROTO_TCP
 #define SOCK_OPT_NAME_KEEPIDLE TCP_KEEPALIVE
 #define SOCK_OPT_NAME_KEEPIDLE_STR "TCP_KEEPALIVE"
+#define TCP_KEEPCNT -1
+#define TCP_KEEPINTVL -1
 #endif
 
 static jint socketOptionSupported(jint sockopt) {

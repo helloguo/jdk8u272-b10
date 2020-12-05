@@ -36,6 +36,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef STATIC_BUILD
+JNIEXPORT jint JNICALL
+JNI_OnLoad_jaas(JavaVM *vm, void *reserved)
+{
+    return JNI_VERSION_1_8;
+}
+#endif
+
 JNIEXPORT void JNICALL
 Java_com_sun_security_auth_module_UnixSystem_getUnixInfo
                                                 (JNIEnv *env, jobject obj) {

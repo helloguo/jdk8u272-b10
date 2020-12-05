@@ -412,6 +412,7 @@ define SetupNativeCompilation
   # mapfile doesnt seem to be implemented on macosx (yet??)
   ifneq ($(OPENJDK_TARGET_OS),macosx)
     ifneq ($(OPENJDK_TARGET_OS),windows)
+      ifneq ($(STATIC_BUILD),true)
       $1_REAL_MAPFILE:=$$($1_MAPFILE)
       ifneq (,$$($1_REORDER))
         $1_REAL_MAPFILE:=$$($1_OBJECT_DIR)/mapfile
@@ -421,6 +422,7 @@ define SetupNativeCompilation
 		$$(CP) $$($1_MAPFILE) $$@.tmp
 		$$(SED) -e 's=OUTPUTDIR=$$($1_OBJECT_DIR)=' $$($1_REORDER) >> $$@.tmp
 		$$(MV) $$@.tmp $$@
+      endif
       endif
     endif
   endif

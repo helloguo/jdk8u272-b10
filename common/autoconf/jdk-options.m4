@@ -771,6 +771,28 @@ AC_DEFUN_ONCE([JDKOPT_SETUP_DEBUG_SYMBOLS],
   AC_SUBST(ZIP_DEBUGINFO_FILES)
 ])
 
+################################################################################
+#
+# Static build support.  When enabled will generate static
+# libraries instead of shared libraries for all JDK libs.
+#
+AC_DEFUN_ONCE([JDKOPT_SETUP_STATIC_BUILD],
+[
+  AC_ARG_ENABLE([static-build], [AS_HELP_STRING([--enable-static-build],
+    [enable static library build @<:@disabled@:>@])])
+  STATIC_BUILD=false
+  if test "x$enable_static_build" = "xyes"; then
+    STATIC_BUILD=true
+  elif test "x$enable_static_build" = "xno"; then
+    AC_MSG_CHECKING([if static build is enabled])
+    AC_MSG_RESULT([no])
+  elif test "x$enable_static_build" != "x"; then
+    AC_MSG_ERROR([--enable-static-build can only be assigned "yes" or "no"])
+  fi
+
+  AC_SUBST(STATIC_BUILD)
+])
+
 # Support for customization of the build process. Some build files
 # will include counterparts from this location, if they exist. This allows
 # for a degree of customization of the build targets and the rules/recipes

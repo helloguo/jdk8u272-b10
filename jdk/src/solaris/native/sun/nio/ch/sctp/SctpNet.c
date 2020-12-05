@@ -50,9 +50,16 @@ sctp_freepaddrs_func* nio_sctp_freepaddrs;
 sctp_bindx_func* nio_sctp_bindx;
 sctp_peeloff_func* nio_sctp_peeloff;
 
-JNIEXPORT jint JNICALL JNI_OnLoad
-  (JavaVM *vm, void *reserved) {
-    return JNI_VERSION_1_2;
+JNIEXPORT jint JNICALL
+#ifdef STATIC_BUILD
+#define JNI_REQ_VERSION JNI_VERSION_1_8
+ JNI_OnLoad_sctp(JavaVM *vm, void *reserved)
+#else
+#define JNI_REQ_VERSION JNI_VERSION_1_2
+ JNI_OnLoad(JavaVM *vm, void *reserved)
+#endif
+{
+    return JNI_REQ_VERSION;
 }
 
 static int preCloseFD = -1;     /* File descriptor to which we dup other fd's

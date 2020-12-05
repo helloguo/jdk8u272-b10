@@ -38,6 +38,14 @@
 
 static jfieldID chan_fd; /* id for jobject 'fd' in java.io.FileChannel */
 
+#ifdef STATIC_BUILD
+JNIEXPORT jint JNICALL
+JNI_OnLoad_nio(JavaVM *vm, void *reserved)
+{
+    return JNI_VERSION_1_8;
+}
+#endif
+
 /**************************************************************
  * static method to store field ID's in initializers
  * and retrieve the allocation granularity

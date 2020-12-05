@@ -445,6 +445,23 @@ AC_DEFUN_ONCE([FLAGS_SETUP_COMPILER_FLAGS_FOR_JDK],
   LEGACY_EXTRA_LDFLAGS="$LEGACY_EXTRA_LDFLAGS $with_extra_ldflags"
   LEGACY_EXTRA_ASFLAGS="$with_extra_asflags"
 
+  if test "x$STATIC_BUILD" = xtrue; then
+    CFLAGS_JDK="${CFLAGS_JDK} $with_extra_cflags -DSTATIC_BUILD=1"
+    CXXFLAGS_JDK="${CXXFLAGS_JDK} $with_extra_cxxflags -DSTATIC_BUILD=1"
+    LEGACY_EXTRA_CFLAGS="${LEGACY_EXTRA_CFLAGS} $with_extra_cflags -DSTATIC_BUILD=1"
+    LEGACY_EXTRA_CXXFLAGS="${LEGACY_EXTRA_CXXFLAGS} $with_extra_cxxflags -DSTATIC_BUILD=1"
+    if test "x$TOOLCHAIN_TYPE" = xgcc; then
+      CFLAGS_SECTIONS="-ffunction-sections -fdata-sections"
+      CFLAGS_JDK="${CFLAGS_JDK} ${CFLAGS_SECTIONS}"
+      LEGACY_EXTRA_CFLAGS="${LEGACY_EXTRA_CFLAGS} ${CFLAGS_SECTIONS}"
+    fi
+    if test "x$TOOLCHAIN_TYPE" = xclang; then
+      CFLAGS_SECTIONS="-ffunction-sections -fdata-sections"
+      CFLAGS_JDK="${CFLAGS_JDK} ${CFLAGS_SECTIONS}"
+      LEGACY_EXTRA_CFLAGS="${LEGACY_EXTRA_CFLAGS} ${CFLAGS_SECTIONS}"
+    fi
+  fi
+
   AC_SUBST(LEGACY_EXTRA_CFLAGS)
   AC_SUBST(LEGACY_EXTRA_CXXFLAGS)
   AC_SUBST(LEGACY_EXTRA_LDFLAGS)

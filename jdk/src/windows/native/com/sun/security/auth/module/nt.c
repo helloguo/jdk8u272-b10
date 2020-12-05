@@ -32,6 +32,14 @@
 #include <ntsecapi.h>
 #include <lmerr.h>
 
+#ifdef STATIC_BUILD
+JNIEXPORT jint JNICALL
+JNI_OnLoad_jaas(JavaVM *vm, void *reserved)
+{
+    return JNI_VERSION_1_8;
+}
+#endif
+
 static BOOL debug = FALSE;
 
 BOOL getToken(PHANDLE);

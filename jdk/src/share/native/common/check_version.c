@@ -27,7 +27,13 @@
 #include "jvm.h"
 
 JNIEXPORT jint JNICALL
+#ifdef STATIC_BUILD
+#define JNI_REQ_VERSION JNI_VERSION_1_8
+JNI_OnLoad_java(JavaVM *vm, void *reserved)
+#else
+#define JNI_REQ_VERSION JNI_VERSION_1_2
 JNI_OnLoad(JavaVM *vm, void *reserved)
+#endif
 {
     jint vm_version = JVM_GetInterfaceVersion();
     if (vm_version != JVM_INTERFACE_VERSION) {
@@ -35,10 +41,11 @@ JNI_OnLoad(JavaVM *vm, void *reserved)
         char buf[128];
         sprintf(buf, "JVM interface version mismatch: expecting %d, got %d.",
                 JVM_INTERFACE_VERSION, (int)vm_version);
-        (*vm)->GetEnv(vm, (void **)&env, JNI_VERSION_1_2);
+        (*vm)->GetEnv(vm, (void **)&env, JNI_REQ_VERSION);
         if (env) {
             (*env)->FatalError(env, buf);
         }
     }
-    return JNI_VERSION_1_2;
+    return JNI_REQ_VERSION;
 }
+

@@ -38,7 +38,13 @@ JNIEXPORT jint JNICALL ipv6_available()
 }
 
 JNIEXPORT jint JNICALL
+#ifdef STATIC_BUILD
+#define JNI_REQ_VERSION JNI_VERSION_1_8
+JNI_OnLoad_net(JavaVM *vm, void *reserved)
+#else
+#define JNI_REQ_VERSION JNI_VERSION_1_2
 JNI_OnLoad(JavaVM *vm, void *reserved)
+#endif
 {
     JNIEnv *env;
     jclass iCls;
@@ -50,15 +56,15 @@ JNI_OnLoad(JavaVM *vm, void *reserved)
         if (JVM_InitializeSocketLibrary() < 0) {
             JNU_ThrowByName(env, "java/lang/UnsatisfiedLinkError",
                             "failed to initialize net library.");
-            return JNI_VERSION_1_2;
+            return JNI_REQ_VERSION;
         }
     }
     iCls = (*env)->FindClass(env, "java/lang/Boolean");
-    CHECK_NULL_RETURN(iCls, JNI_VERSION_1_2);
+    CHECK_NULL_RETURN(iCls, JNI_REQ_VERSION);
     mid = (*env)->GetStaticMethodID(env, iCls, "getBoolean", "(Ljava/lang/String;)Z");
-    CHECK_NULL_RETURN(mid, JNI_VERSION_1_2);
+    CHECK_NULL_RETURN(mid, JNI_REQ_VERSION);
     s = (*env)->NewStringUTF(env, "java.net.preferIPv4Stack");
-    CHECK_NULL_RETURN(s, JNI_VERSION_1_2);
+    CHECK_NULL_RETURN(s, JNI_REQ_VERSION);
     preferIPv4Stack = (*env)->CallStaticBooleanMethod(env, iCls, mid, s);
 
     /*
@@ -70,7 +76,7 @@ JNI_OnLoad(JavaVM *vm, void *reserved)
     platformInit();
     parseExclusiveBindProperty(env);
 
-    return JNI_VERSION_1_2;
+    return JNI_REQ_VERSION;
 }
 
 static int initialized = 0;

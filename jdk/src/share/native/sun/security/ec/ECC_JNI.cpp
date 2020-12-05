@@ -35,6 +35,14 @@
 
 extern "C" {
 
+#ifdef STATIC_BUILD
+JNIEXPORT jint JNICALL
+JNI_OnLoad_sunec(JavaVM *vm, void *reserved)
+{
+    return JNI_VERSION_1_8;
+}
+#endif
+
 /*
  * Throws an arbitrary Java exception.
  */
